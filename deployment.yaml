@@ -1,12 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-name: pocdemo
 labels:
   app: pocdemo
 spec:
-strategy:
-  type: Recreate
+  type: NodePort
 template:
   metadata:
     labels:
