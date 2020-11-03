@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+name: pocdemo
+labels:
+  app: pocdemo
+spec:
+strategy:
+  type: Recreate
+template:
+  metadata:
+    labels:
+      app: pocdemo
+      tier: pocdemo
+  spec:
+    containers:
+    - name: pocdemo
+      image: gcr.io/network-demo-293711/sampleimag:latest
+      imagePullPolicy: Always
+      ports:
+      - containerPort: 8081
+        name: pocdemo
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+name: pocdemo
+labels:
+  app: pocdemo
+spec:
+ports:
+  - port: 8081
+    targetPort: 8081
+selector:
+  app: pocdemo
+  tier: pocdemo
+type: LoadBalancer
