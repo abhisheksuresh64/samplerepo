@@ -1,36 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-labels:
-  app: pocdemo
+  name: pocdemo
 spec:
-  type: NodePort
-template:
-  metadata:
-    labels:
+  replicas: 2
+  selector:
+    matchLabels:
       app: pocdemo
-      tier: pocdemo
-  spec:
-    containers:
-    - name: pocdemo
-      image: gcr.io/network-demo-293711/sampleimag:latest
-      imagePullPolicy: Always
-      ports:
-      - containerPort: 8081
-        name: pocdemo
-
+  template:
+    metadata:
+      labels:
+        app: pocdemo
+    spec:
+      containers:
+      - name: pocdemo
+        image: gcr.io/network-demo-293711/sampleimag:latest
+        ports:
+        - containerPort: 8081
 ---
 apiVersion: v1
 kind: Service
 metadata:
-name: pocdemo
-labels:
-  app: pocdemo
+  name: pocdemo
 spec:
-ports:
+  ports:
   - port: 8081
+    protocol: TCP
     targetPort: 8081
-selector:
-  app: pocdemo
-  tier: pocdemo
-type: LoadBalancer
+  selector:
+    app: pocdemo
